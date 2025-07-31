@@ -3,13 +3,19 @@ require('dotenv').config(); // carica le variabili da .env
 const Imap = require('imap');
 const { simpleParser } = require('mailparser');
 
-const imap = new Imap({
+const imapOptions =
+{
     user: process.env.IMAP_USER,
-    password: process.env.IMAP_PASSWORD,
+        password: process.env.IMAP_PASSWORD,
     host: process.env.IMAP_HOST,
     port: Number(process.env.IMAP_PORT),
     tls: process.env.IMAP_TLS === 'true',
-});
+    tlsOptions: { servername: process.env.IMAP_HOST}
+};
+
+console.log(imapOptions)
+
+const imap = new Imap(imapOptions);
 
 function openInbox(cb) {
     imap.openBox('INBOX', false, cb);
